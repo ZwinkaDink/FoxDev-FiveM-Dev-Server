@@ -85,7 +85,7 @@ end)
 -- Voice
 
 local prox = 26.0 -- Sets the Default Voice Distance
-local allowProximityChange = false -- Set to True to allow Changing Voice Distance | False to not allow Changing Voice Distance
+local allowProximityChange = true -- Set to True to allow Changing Voice Distance | False to not allow Changing Voice Distance
 
 Citizen.CreateThread(function()
 	while true do

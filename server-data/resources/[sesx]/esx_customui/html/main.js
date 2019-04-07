@@ -12,6 +12,7 @@ $(function(){
 
 		}else if (event.data.action == "updateStatus"){
 			updateStatus(event.data.status);
+				
 		}else if (event.data.action == "setTalking"){
 
 			setTalking(event.data.value)
@@ -63,20 +64,20 @@ function setValue(key, value){
 function setJobIcon(value){
 	$('#job img').attr('src', 'img/jobs/'+value+'.png')
 }
-
+ 
 function updateStatus(status){
-	var hunger = status[0]
+	  var hunger = status[0]
 	var thirst = status[1]
 	var drunk = status[2]
 	$('#hunger .bg').css('height', hunger.percent+'%')
 	$('#water .bg').css('height', thirst.percent+'%')
-	$('#drunk .bg').css('height', drunk.percent+'%');
+	/* $('#drunk .bg').css('height', drunk.percent+'%');
 	if (drunk.percent > 0){
 		$('#drunk').show();
 	}else{
 		$('#drunk').show();
-	}
-
+	}  */
+ 
 }
 
 function setProximity(value){
