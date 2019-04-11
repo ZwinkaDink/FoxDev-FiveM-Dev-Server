@@ -34,7 +34,7 @@ files {
 	'html/img/jobs/garbage.png',
 	'html/img/jobs/lumberjack.png',
 	'html/img/jobs/slaughterer.png',
-	'html/img/jobs/mecano.png',
+	'html/img/jobs/mechanic.png',
 	'html/img/jobs/miner.png',
 	'html/img/jobs/pizza.png',
 	'html/img/jobs/police.png',

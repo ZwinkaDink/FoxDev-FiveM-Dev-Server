@@ -71,12 +71,12 @@ function updateStatus(status){
 	var drunk = status[2]
 	$('#hunger .bg').css('height', hunger.percent+'%')
 	$('#water .bg').css('height', thirst.percent+'%')
-	/* $('#drunk .bg').css('height', drunk.percent+'%');
+	 $('#drunk .bg').css('height', drunk.percent+'%');
 	if (drunk.percent > 0){
 		$('#drunk').show();
 	}else{
 		$('#drunk').show();
-	}  */
+	}  
  
 }
 

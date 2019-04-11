@@ -7,7 +7,7 @@
 	bottom: 20px; /* Default: 20px */
 
 	left: 82.0%; /* (18.2% Right Side of Map) | (82.0% Right Side of Screen) | (2.7% Above Map)  */
-	bottom: 1.85; /* (1.85% Default-Fix for all 16:9 resolutions) | (21.0% Above Map) */
+	bottom: 24.0%; /* (1.85% Default-Fix for all 16:9 resolutions) | (21.0% Above Map) */
 }
 
 .carStats{
