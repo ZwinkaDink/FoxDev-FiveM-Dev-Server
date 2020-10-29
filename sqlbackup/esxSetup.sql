@@ -16,6 +16,29 @@
 CREATE DATABASE IF NOT EXISTS `es_extended` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin */;
 USE `es_extended`;
 
+-- Dumping structure for table es_extended.addon_account
+CREATE TABLE IF NOT EXISTS `addon_account` (
+  `name` varchar(60) COLLATE utf8mb4_bin NOT NULL,
+  `label` varchar(100) COLLATE utf8mb4_bin NOT NULL,
+  `shared` int(11) NOT NULL,
+  PRIMARY KEY (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+-- Data exporting was unselected.
+
+-- Dumping structure for table es_extended.addon_account_data
+CREATE TABLE IF NOT EXISTS `addon_account_data` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `account_name` varchar(100) COLLATE utf8mb4_bin DEFAULT NULL,
+  `money` int(11) NOT NULL,
+  `owner` varchar(40) COLLATE utf8mb4_bin DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `index_addon_account_data_account_name_owner` (`account_name`,`owner`),
+  KEY `index_addon_account_data_account_name` (`account_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+-- Data exporting was unselected.
+
 -- Dumping structure for table es_extended.items
 CREATE TABLE IF NOT EXISTS `items` (
   `name` varchar(50) COLLATE utf8mb4_bin NOT NULL,
@@ -48,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `job_grades` (
   `skin_male` longtext COLLATE utf8mb4_bin NOT NULL,
   `skin_female` longtext COLLATE utf8mb4_bin NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- Data exporting was unselected.
 
@@ -62,6 +85,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `job_grade` int(11) DEFAULT 0,
   `loadout` longtext COLLATE utf8mb4_bin DEFAULT NULL,
   `position` varchar(255) COLLATE utf8mb4_bin DEFAULT '{"x":-269.4,"y":-955.3,"z":31.2,"heading":205.8}',
+  `skin` longtext COLLATE utf8mb4_bin DEFAULT NULL,
   PRIMARY KEY (`identifier`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
