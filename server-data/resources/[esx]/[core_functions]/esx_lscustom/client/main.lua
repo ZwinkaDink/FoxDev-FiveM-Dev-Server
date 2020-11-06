@@ -1,27 +1,32 @@
-ESX = nil
-local Vehicles = {}
-local PlayerData = {}
-local lsMenuIsShowed = false
-local isInLSMarker = false
-local myCar = {}
+local Keys = {
+	["ESC"] = 322, ["F1"] = 288, ["F2"] = 289, ["F3"] = 170, ["F5"] = 166, ["F6"] = 167, ["F7"] = 168, ["F8"] = 169, ["F9"] = 56, ["F10"] = 57,
+	["~"] = 243, ["1"] = 157, ["2"] = 158, ["3"] = 160, ["4"] = 164, ["5"] = 165, ["6"] = 159, ["7"] = 161, ["8"] = 162, ["9"] = 163, ["-"] = 84, ["="] = 83, ["BACKSPACE"] = 177,
+	["TAB"] = 37, ["Q"] = 44, ["W"] = 32, ["E"] = 38, ["R"] = 45, ["T"] = 245, ["Y"] = 246, ["U"] = 303, ["P"] = 199, ["["] = 39, ["]"] = 40, ["ENTER"] = 18,
+	["CAPS"] = 137, ["A"] = 34, ["S"] = 8, ["D"] = 9, ["F"] = 23, ["G"] = 47, ["H"] = 74, ["K"] = 311, ["L"] = 182,
+	["LEFTSHIFT"] = 21, ["Z"] = 20, ["X"] = 73, ["C"] = 26, ["V"] = 0, ["B"] = 29, ["N"] = 249, ["M"] = 244, [","] = 82, ["."] = 81,
+	["LEFTCTRL"] = 36, ["LEFTALT"] = 19, ["SPACE"] = 22, ["RIGHTCTRL"] = 70,
+	["HOME"] = 213, ["PAGEUP"] = 10, ["PAGEDOWN"] = 11, ["DELETE"] = 178,
+	["LEFT"] = 174, ["RIGHT"] = 175, ["TOP"] = 27, ["DOWN"] = 173,
+	["NENTER"] = 201, ["N4"] = 108, ["N5"] = 60, ["N6"] = 107, ["N+"] = 96, ["N-"] = 97, ["N7"] = 117, ["N8"] = 61, ["N9"] = 118
+}
+
+ESX =					nil
+local Vehicles =		{}
+local PlayerData		= {}
+local lsMenuIsShowed	= false
+local isInLSMarker		= false
+local myCar				= {}
 
 Citizen.CreateThread(function()
 	while ESX == nil do
 		TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
 		Citizen.Wait(0)
 	end
-
-	while ESX.GetPlayerData().job == nil do
-		Citizen.Wait(10)
-	end
-
-	PlayerData = ESX.GetPlayerData()
 end)
 
 RegisterNetEvent('esx:playerLoaded')
 AddEventHandler('esx:playerLoaded', function(xPlayer)
 	PlayerData = xPlayer
-
 	ESX.TriggerServerCallback('esx_lscustom:getVehiclesPrices', function(vehicles)
 		Vehicles = vehicles
 	end)
@@ -43,15 +48,6 @@ RegisterNetEvent('esx_lscustom:cancelInstallMod')
 AddEventHandler('esx_lscustom:cancelInstallMod', function()
 	local vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
 	ESX.Game.SetVehicleProperties(vehicle, myCar)
-	if not (myCar.modTurbo) then
-	ToggleVehicleMod(vehicle,  18, false)
-	end
-	if not (myCar.modXenon) then
-	ToggleVehicleMod(vehicle,  22, false)
-	end
-	if not (myCar.windowTint) then
-	SetVehicleWindowTint(vehicle, 0)
-	end
 end)
 
 function OpenLSMenu(elems, menuName, menuTitle, parent)
@@ -63,6 +59,7 @@ function OpenLSMenu(elems, menuName, menuTitle, parent)
 	}, function(data, menu)
 		local isRimMod, found = false, false
 		local vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
+		local vehicleData = ESX.Game.GetVehicleProperties(vehicle)
 
 		if data.current.modType == "modFrontWheels" then
 			isRimMod = true
@@ -87,16 +84,28 @@ function OpenLSMenu(elems, menuName, menuTitle, parent)
 
 					if isRimMod then
 						price = math.floor(vehiclePrice * data.current.price / 100)
-						TriggerServerEvent('esx_lscustom:buyMod', price)
+						TriggerServerEvent("esx_lscustom:buyMod", price)
+						if Config.EnableJobLogs then
+							TriggerServerEvent('esx_joblogs:AddInLog', "mechanic", "buy_mod", GetPlayerName(PlayerId()), price, vehicleData.plate)
+						end
 					elseif v.modType == 11 or v.modType == 12 or v.modType == 13 or v.modType == 15 or v.modType == 16 then
 						price = math.floor(vehiclePrice * v.price[data.current.modNum + 1] / 100)
-						TriggerServerEvent('esx_lscustom:buyMod', price)
+						TriggerServerEvent("esx_lscustom:buyMod", price)
+						if Config.EnableJobLogs then
+							TriggerServerEvent('esx_joblogs:AddInLog', "mechanic", "buy_mod" , GetPlayerName(PlayerId()), price, vehicleData.plate)
+						end
 					elseif v.modType == 17 then
 						price = math.floor(vehiclePrice * v.price[1] / 100)
-						TriggerServerEvent('esx_lscustom:buyMod', price)
+						TriggerServerEvent("esx_lscustom:buyMod", price)
+						if Config.EnableJobLogs then
+							TriggerServerEvent('esx_joblogs:AddInLog', "mechanic", "buy_mod", GetPlayerName(PlayerId()), price, vehicleData.plate)
+						end
 					else
 						price = math.floor(vehiclePrice * v.price / 100)
-						TriggerServerEvent('esx_lscustom:buyMod', price)
+						TriggerServerEvent("esx_lscustom:buyMod", price)
+						if Config.EnableJobLogs then
+							TriggerServerEvent('esx_joblogs:AddInLog', "mechanic", "buy_mod", GetPlayerName(PlayerId()), price, vehicleData.plate)
+						end
 					end
 				end
 
@@ -132,10 +141,10 @@ end
 function UpdateMods(data)
 	local vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
 
-	if data.modType then
+	if data.modType ~= nil then
 		local props = {}
 		
-		if data.wheelType then
+		if data.wheelType ~= nil then
 			props['wheels'] = data.wheelType
 			ESX.Game.SetVehicleProperties(vehicle, props)
 			props = {}
@@ -203,7 +212,7 @@ function GetAction(data)
 			menuTitle = v.label
 			parent    = v.parent
 
-			if v.modType then
+			if v.modType ~= nil then
 				
 				if v.modType == 22 then
 					table.insert(elements, {label = " " .. _U('by_default'), modType = k, modNum = false})
@@ -287,7 +296,7 @@ function GetAction(data)
 					local modCount = GetNumVehicleMods(vehicle, v.modType)
 					for j = 0, modCount, 1 do
 						local modName = GetModTextLabel(vehicle, v.modType, j)
-						if modName then
+						if modName ~= nil then
 							local _label = ''
 							if j == currentMods.modFrontWheels then
 								_label = GetLabelText(modName) .. ' - <span style="color:cornflowerblue;">'.. _U('installed') ..'</span>'
@@ -325,7 +334,7 @@ function GetAction(data)
 					local modCount = GetNumVehicleMods(vehicle, v.modType) -- BODYPARTS
 					for j = 0, modCount, 1 do
 						local modName = GetModTextLabel(vehicle, v.modType, j)
-						if modName then
+						if modName ~= nil then
 							local _label = ''
 							if j == currentMods[k] then
 								_label = GetLabelText(modName) .. ' - <span style="color:cornflowerblue;">'.. _U('installed') ..'</span>'
@@ -373,13 +382,11 @@ end
 Citizen.CreateThread(function()
 	for k,v in pairs(Config.Zones) do
 		local blip = AddBlipForCoord(v.Pos.x, v.Pos.y, v.Pos.z)
-
 		SetBlipSprite(blip, 72)
 		SetBlipScale(blip, 0.8)
 		SetBlipAsShortRange(blip, true)
-
-		BeginTextCommandSetBlipName('STRING')
-		AddTextComponentSubstringPlayerName(v.Name)
+		BeginTextCommandSetBlipName("STRING")
+		AddTextComponentString(v.Name)
 		EndTextCommandSetBlipName(blip)
 	end
 end)
@@ -389,14 +396,14 @@ Citizen.CreateThread(function()
 	while true do
 		Citizen.Wait(0)
 		local playerPed = PlayerPedId()
-
 		if IsPedInAnyVehicle(playerPed, false) then
-			local coords = GetEntityCoords(PlayerPedId())
-			local currentZone, zone, lastZone
-
-			if (PlayerData.job and PlayerData.job.name == 'mechanic') or not Config.IsMechanicJobOnly then
+			local coords      = GetEntityCoords(PlayerPedId())
+			local currentZone = nil
+			local zone 		  = nil
+			local lastZone    = nil
+			if (PlayerData.job ~= nil and PlayerData.job.name == 'mechanic') or Config.IsmechanicJobOnly == false then
 				for k,v in pairs(Config.Zones) do
-					if GetDistanceBetweenCoords(coords, v.Pos.x, v.Pos.y, v.Pos.z, true) < v.Size.x and not lsMenuIsShowed then
+					if GetDistanceBetweenCoords(coords, v.Pos.x, v.Pos.y, v.Pos.z, true) < v.Size.x then
 						isInLSMarker  = true
 						ESX.ShowHelpNotification(v.Hint)
 						break
@@ -406,8 +413,8 @@ Citizen.CreateThread(function()
 				end
 			end
 
-			if IsControlJustReleased(0, 38) and not lsMenuIsShowed and isInLSMarker then
-				if (PlayerData.job and PlayerData.job.name == 'mechanic') or not Config.IsMechanicJobOnly then
+			if IsControlJustReleased(0, Keys['E']) and not lsMenuIsShowed and isInLSMarker then
+				if (PlayerData.job ~= nil and PlayerData.job.name == 'mechanic') or Config.IsmechanicJobOnly == false then
 					lsMenuIsShowed = true
 
 					local vehicle = GetVehiclePedIsIn(playerPed, false)
@@ -435,15 +442,14 @@ end)
 -- Prevent Free Tunning Bug
 Citizen.CreateThread(function()
 	while true do
-		Citizen.Wait(0)
-
+		Citizen.Wait(1)
 		if lsMenuIsShowed then
-			DisableControlAction(2, 288, true)
-			DisableControlAction(2, 289, true)
-			DisableControlAction(2, 170, true)
-			DisableControlAction(2, 167, true)
-			DisableControlAction(2, 168, true)
-			DisableControlAction(2, 23, true)
+			DisableControlAction(2, Keys['F1'], true)
+			DisableControlAction(2, Keys['F2'], true)
+			DisableControlAction(2, Keys['F3'], true)
+			DisableControlAction(2, Keys['F6'], true)
+			DisableControlAction(2, Keys['F7'], true)
+			DisableControlAction(2, Keys['F'], true)
 			DisableControlAction(0, 75, true)  -- Disable exit vehicle
 			DisableControlAction(27, 75, true) -- Disable exit vehicle
 		else

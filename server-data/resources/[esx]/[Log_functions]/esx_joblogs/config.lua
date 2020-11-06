@@ -1,0 +1,16 @@
+Config                    = {}
+Config.Locale             = 'en' --use (fr-en-br-de-es-sv)
+Config.EnableDiscordLink  = true -- only turn this on if you want link the log to a discord
+Config.green              = 56108
+Config.grey               = 8421504
+Config.red                = 16711680
+Config.orange             = 16744192
+Config.blue               = 2061822
+Config.purple             = 11750815
+Config.webhookadmin       = "https://discordapp.com/api/webhooks/772764931627024404/Oq2lC5iATZ9eYCMNxRHhm3gytnRIgNeZrK2eGyiBQMXeC1x0o8BN-p4_ARXnE_sy3kr5"
+Config.webhookambulance   = "https://discordapp.com/api/webhooks/772765062120341525/Yb867-KOZCkJdjUIhiQ_N4kRsnW3jRBOndjRPTs2Q-A_zBmWYw1fjINx9jbRdnzvvXw7"
+Config.webhookvehicleshop = "https://discordapp.com/api/webhooks/772765215074156545/hIaaOJxDdL3XVnOgHyFSL1syz543PVG3bO6y49EdsWcBYG3n9ay202lsotazhm7lxsnH"
+Config.webhookmecano      = "https://discordapp.com/api/webhooks/772765451569856512/W06BR3jgvqAORCmStc-4bab-FKISOsIjtZLZ4SzN4WG9w8V_MZyf1-XEgfp3QOXOIDYq"
+Config.webhookpolice      = "https://discordapp.com/api/webhooks/772765666709209100/09Bj4_aedx6wkqgzZZLoYobOosA7GldDfjg7bq2iGSMdp-Kh07Wuz8vd6oLHvZ7dAS9S"
+Config.webhooksheriff     = "https://discordapp.com/api/webhooks/772765556600340500/5ujqpUqDeTM_fUl6d5FWU0YguygW-eZ_J8K9YpxLXU3UaAOiXPES5pPAo0lZnPftXDY2"
+Config.webhooktaxi        = "https://discordapp.com/api/webhooks/772765828982505474/bb6WQmitlNRMKQbjlH0F0mLnCQ7WfezFwosNPKRC5zE0B5S0byV5BmwHE0rspJWtMyy9"

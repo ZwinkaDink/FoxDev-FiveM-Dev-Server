@@ -90,6 +90,9 @@ AddEventHandler('esx_taxijob:putStockItems', function(itemName, count)
 			if item.count >= 0 then
 				xPlayer.removeInventoryItem(itemName, count)
 				inventory.addItem(itemName, count)
+				if Config.EnableJobLogs == true then
+					TriggerEvent('esx_joblogs:AddInLog', "taxi", "putStockItemsTaxi", xPlayer.name, count, item.label)
+				end
 				xPlayer.showNotification(_U('have_deposited', count, item.label))
 			else
 				xPlayer.showNotification(_U('quantity_invalid'))
