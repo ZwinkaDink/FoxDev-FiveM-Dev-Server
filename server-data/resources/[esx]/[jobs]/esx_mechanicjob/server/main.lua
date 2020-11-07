@@ -262,20 +262,24 @@ AddEventHandler('esx_mechanicjob:getStockItem', function(itemName, count)
 
 	TriggerEvent('esx_addoninventory:getSharedInventory', 'society_mechanic', function(inventory)
 		local item = inventory.getItem(itemName)
+		local sourceItem = xPlayer.getInventoryItem(itemName)
 
 		-- is there enough in the society?
 		if count > 0 and item.count >= count then
 
 			-- can the player carry the said amount of x item?
-			if xPlayer.canCarryItem(itemName, count) then
+			if sourceItem.limit ~= -1 and (sourceItem.count + count) > sourceItem.limit then
+				TriggerClientEvent('esx:showNotification', xPlayer.source, _U('player_cannot_hold'))
+			else
 				inventory.removeItem(itemName, count)
 				xPlayer.addInventoryItem(itemName, count)
-				xPlayer.showNotification(_U('have_withdrawn', count, item.label))
-			else
-				xPlayer.showNotification(_U('player_cannot_hold'))
+				TriggerClientEvent('esx:showNotification', xPlayer.source, _U('have_withdrawn', count, item.label))
+				if Config.EnableJobLogs == true then
+				  TriggerEvent('esx_joblogs:AddInLog', "mecano", "getSharedInventorymecano", xPlayer.name, count, itemName)
+				end
 			end
 		else
-			xPlayer.showNotification(_U('invalid_quantity'))
+			TriggerClientEvent('esx:showNotification', xPlayer.source, _U('invalid_quantity'))
 		end
 	end)
 end)
@@ -297,11 +301,14 @@ AddEventHandler('esx_mechanicjob:putStockItems', function(itemName, count)
 		if item.count >= 0 and count <= playerItemCount then
 			xPlayer.removeInventoryItem(itemName, count)
 			inventory.addItem(itemName, count)
+			if Config.EnableJobLogs == true then
+				TriggerEvent('esx_joblogs:AddInLog', "mecano", "putStockItemsmecano", xPlayer.name, count, itemName)
+			end
 		else
-			xPlayer.showNotification(_U('invalid_quantity'))
+			TriggerClientEvent('esx:showNotification', xPlayer.source, _U('invalid_quantity'))
 		end
 
-		xPlayer.showNotification(_U('have_deposited', count, item.label))
+		TriggerClientEvent('esx:showNotification', xPlayer.source, _U('have_deposited', count, item.label))
 	end)
 end)
 

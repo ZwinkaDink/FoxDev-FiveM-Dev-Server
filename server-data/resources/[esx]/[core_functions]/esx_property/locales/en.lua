@@ -3,6 +3,7 @@ Locales['en'] = {
   ['have_deposited'] = 'you have deposited ~y~x%s~s~ ~b~%s~s~',
   ['free_prop'] = 'property For Sale',
   ['property'] = 'property',
+  ['leave'] = 'leave',
   ['enter'] = 'enter',
   ['move_out'] = 'move out from property',
   ['move_out_sold'] = 'sell property for <span style="color:green;">$%s</span>',

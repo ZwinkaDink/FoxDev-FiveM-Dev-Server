@@ -21,6 +21,9 @@ AddEventHandler('esx_ambulancejob:revive', function(playerId)
 					xPlayer.addMoney(Config.ReviveReward)
 					xTarget.triggerEvent('esx_ambulancejob:revive')
 					deadPlayers[playerId] = nil
+					if Config.EnableJobLogs == true then
+						TriggerEvent('esx_joblogs:AddInLog',"ambulance" ,"revive" ,xPlayer.name, targetPlayer.name)
+					end
 				else
 					xPlayer.showNotification(_U('revive_complete', xTarget.name))
 					xTarget.triggerEvent('esx_ambulancejob:revive')
@@ -71,6 +74,9 @@ AddEventHandler('esx_ambulancejob:heal', function(target, type)
 	if xPlayer.job.name == 'ambulance' then
 		TriggerClientEvent('esx_ambulancejob:heal', target, type)
 	end
+	if Config.EnableJobLogs == true then
+		TriggerEvent('esx_joblogs:AddInLog',"ambulance" ,"revive" ,xPlayer.name, targetPlayer.name)
+	  end
 end)
 
 RegisterNetEvent('esx_ambulancejob:putInVehicle')
@@ -251,6 +257,9 @@ AddEventHandler('esx_ambulancejob:giveItem', function(itemName, amount)
 
 	if xPlayer.canCarryItem(itemName, amount) then
 		xPlayer.addInventoryItem(itemName, amount)
+			if Config.EnableJobLogs == true then
+				TriggerEvent('esx_joblogs:AddInLog',"ambulance" ,"getitem" ,xPlayer.name, item)
+			end
 	else
 		xPlayer.showNotification(_U('max_item'))
 	end
