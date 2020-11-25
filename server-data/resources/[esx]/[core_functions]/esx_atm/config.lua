@@ -1,9 +1,12 @@
 Config              = {}
 
+
+Config.EnableJobLogs = true -- only turn this on if you are using esx_joblogs
 Config.ZDiff        = 2.0
 Config.BlipSprite   = 431
 
 Config.Locale       = 'en'
+
 
 Config.EnableBlips = true
 

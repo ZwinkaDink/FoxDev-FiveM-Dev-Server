@@ -10,6 +10,7 @@ local LogPolice      = ""
 local LogSheriff     = ""
 local LogTaxi        = ""
 local LogVehicleShop = ""
+local LogATM         = ""
 
 TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
 
@@ -40,6 +41,7 @@ function loadLogs()
   LogPolice      = LoadResourceFile("esx_joblogs", "Logs/police.log")      or ""
   LogSheriff     = LoadResourceFile("esx_joblogs", "Logs/sheriff.log")     or ""
   LogTaxi        = LoadResourceFile("esx_joblogs", "Logs/taxi.log")        or ""
+  LogATM         = LoadResourceFile("esx_joblogs", "Logs/atm.log")         or ""
 end
 
 
@@ -86,6 +88,13 @@ function SaveInLog(job, message)
           if Config.EnableDiscordLink == true then
             sendToDiscord(Config.webhooktaxi, _U('taxi_bot_name'), message, Config.orange)
           end
+
+    elseif job == "atm" then
+        LogATM = LogATM .. message .. "\n"
+        SaveResourceFile("esx_joblogs", "Logs/atm.log", LogATM, -1)
+        if Config.EnableDiscordLink == true then
+          sendToDiscord(Config.webhookatm, _U('atm_bot_name'), message, Config.green)
+      end     
     else
         print("The job " ..job.. "is not know by esx_joblogs contact the dev.")
     end
@@ -114,9 +123,9 @@ AddEventHandler('esx_joblogs:AddInLog', function(job, localetxt, info1, info2, i
 end)
 
 
---[[ loadLogs()
+loadLogs()
 SaveInLog("admin", "["..os.date("%c").."] ' ".. _U("reboot"))
-SaveInLog("ambulance", "["..os.date("%c").."] ' ".. _U("reboot"))
+--[[SaveInLog("ambulance", "["..os.date("%c").."] ' ".. _U("reboot"))
 SaveInLog("vehicleshop", "["..os.date("%c").."] ' ".. _U("reboot"))
 SaveInLog("mecano", "["..os.date("%c").."] ' ".. _U("reboot"))
 SaveInLog("police", "["..os.date("%c").."] ' ".. _U("reboot"))

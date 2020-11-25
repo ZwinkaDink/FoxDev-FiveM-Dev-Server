@@ -55,4 +55,10 @@ Locales['en'] = {
   ['carrent']              = '%s started renting ( (Plate : %s ) - (Model : %s))',
   ['carsold']              = '%s resold a vehicle. (Plate : %s ) - (Model : %s)',
   ['selfcarbuy']           = '%s bought a vehicle. (Plate : %s ) - (Model : %s)',
+   -- esx_atm
+  ['atm_bot_name']         = 'ATM Log',
+  ['deposit']              = '%s has deposited %s dollars into the ATM',
+  ['withdraw']             = '%s has withdrawn %s dollars from the ATM',
+
 }
+

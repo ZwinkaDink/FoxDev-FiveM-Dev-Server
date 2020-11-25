@@ -16,6 +16,12 @@ AddEventHandler('esx_atm:deposit', function(amount)
 		xPlayer.removeMoney(amount)
 		xPlayer.addAccountMoney('bank', amount)
 		xPlayer.showNotification(_U('deposit_money', amount))
+			--ATM logging
+
+			if Config.EnableJobLogs == true then
+				TriggerEvent('esx_joblogs:AddInLog', 'atm', 'deposit', xPlayer.getName(), amount)
+			end
+
 	end
 end)
 
@@ -35,5 +41,14 @@ AddEventHandler('esx_atm:withdraw', function(amount)
 		xPlayer.removeAccountMoney('bank', amount)
 		xPlayer.addMoney(amount)
 		xPlayer.showNotification(_U('withdraw_money', amount))
+			--ATM logging
+
+			if Config.EnableJobLogs == true then
+				TriggerEvent('esx_joblogs:AddInLog', 'atm', 'withdraw', xPlayer.getName(), amount)
+			end
+
+
+
+
 	end
 end)
